@@ -3,6 +3,7 @@ import { createShip } from "./ship";
 const createGameboard = () => {
   let gridSize = 8;
   let ships = [];
+  let index = 0;
   createShips(4, 2);
   createShips(3, 3);
   createShips(2, 4);
@@ -38,15 +39,16 @@ const createGameboard = () => {
 
   function createShips(quantity, length) {
     for (let i = 0; i < quantity; i++) {
-      ships.push(createShip(length));
+      ships.push(createShip(length, index));
+      index++;
     }
   }
 
-  function setShipLocation(shipNumber, x, y, horizontal = true) {
-    for (let i = 0; i < ships[shipNumber].length; i++) {
+  function setShipLocation(ship, x, y) {
+    for (let i = 0; i < ship.length; i++) {
       grid[x][y].shipHere = true;
-      grid[x][y].shipIndex = shipNumber;
-      if (horizontal) {
+      grid[x][y].shipIndex = ship.index;
+      if (ship.horizontal) {
         x += 1;
       } else {
         y += 1;

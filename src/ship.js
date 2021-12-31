@@ -1,8 +1,10 @@
-const createShip = (len) => {
+const createShip = (len, shipIndex) => {
   let length = len;
   let sunk = false;
   let horizontal = false;
+  let index = shipIndex;
   let location = [];
+  let placed = false;
 
   function markHit(x, y) {
     location.forEach((block) => {
@@ -20,7 +22,7 @@ const createShip = (len) => {
     });
   }
 
-  function placeShip(x, y, horizontal) {
+  function placeShip(x, y) {
     for (let i = 0; i < length; i++) {
       if (horizontal) {
         location.push({ x: x + i, y, blockHit: false });
@@ -43,6 +45,8 @@ const createShip = (len) => {
     location,
     sinkSelf,
     horizontal,
+    index,
+    placed,
   };
 };
 

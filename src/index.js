@@ -3,6 +3,7 @@ import { createPlayer } from "./player";
 import { appendBoard, createSetterBoard } from "./createBoardDOM";
 import { makeShipWindow, makeSettingBoard } from "./placeShipDOM";
 import { createGameboard } from "./gameboard";
+import { startShipPlacement } from "./shipPlacementPhase";
 
 let name = "Player 1";
 
@@ -11,6 +12,11 @@ let player2 = createPlayer("computer");
 player1.setEnemyBoard(player2.board);
 player2.setEnemyBoard(player1.board);
 
+function setPlayerBoard(tempBoard) {
+  player1.board = tempBoard;
+  console.table(player1.board.grid);
+  console.table(player1.board.ships);
+}
 function playGame() {
   let gameover = false;
   while (true) {
@@ -46,75 +52,11 @@ document.querySelector("#start-game-btn").addEventListener("click", () => {
   }
   document.querySelector("body").innerHTML = "";
   startShipPlacement();
-
   //appendBoard(1, "Enemy");
 });
 
-function startShipPlacement() {
-  let tempBoard = createGameboard();
-  let selectedShipIndex = 0;
-  tempBoard.setShipLocation(5, 3, 3);
-  makeWindow();
+export { setPlayerBoard };
 
-  function makeWindow() {
-    document.querySelector("body").innerHTML = "";
-    makeShipWindow(tempBoard.ships, selectedShipIndex);
-    makeSettingBoard(tempBoard.grid);
-    rotateBtnListen();
-    selectShipListen();
-    placeShipListen();
-  }
-
-  function selectShipListen() {
-    let ships = document.querySelectorAll(".ship");
-    ships.forEach((ship) =>
-      ship.addEventListener("click", () => {
-        selectedShipIndex = parseInt(ship.dataset.index);
-        makeWindow();
-      })
-    );
-  }
-
-  function placeShipListen() {
-    let squares = document.querySelectorAll(".square");
-    squares.forEach((square) => {
-      square.addEventListener("click", () => {
-        let x = parseInt(square.dataset.x);
-        let y = parseInt(square.dataset.y);
-        console.log("x: " + x, "y: " + y);
-        tempBoard.setShipLocation(
-          selectedShipIndex,
-          x,
-          y,
-          tempBoard.ships[selectedShipIndex].horizontal
-        );
-        tempBoard.ships.splice(selectedShipIndex, 1);
-        makeWindow();
-      });
-    });
-  }
-
-  function rotateBtnListen() {
-    document
-      .querySelector(".rotate-ships-btn")
-      .addEventListener("click", () => {
-        console.log(
-          selectedShipIndex,
-          tempBoard.ships[selectedShipIndex].horizontal
-        );
-        if (tempBoard.ships[selectedShipIndex].horizontal) {
-          tempBoard.ships[selectedShipIndex].horizontal = false;
-        } else {
-          tempBoard.ships[selectedShipIndex].horizontal = true;
-        }
-        console.log(
-          selectedShipIndex,
-          tempBoard.ships[selectedShipIndex].horizontal
-        );
-        makeWindow();
-      });
-  }
-}
 /*
 function setShip() {}
 

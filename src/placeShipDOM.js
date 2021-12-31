@@ -2,12 +2,14 @@ function makeShipWindow(shipArray, selectedShipIndex) {
   let shipWindow = createShipWindow();
   shipWindow.append(addRotateBtn());
   for (let i = 0; i < shipArray.length; i++) {
-    let ship = createShip(shipArray[i].length, shipArray[i].horizontal);
-    ship.dataset.index = i;
-    if (selectedShipIndex == i) {
-      ship.classList.add("selected");
+    if (shipArray[i].placed == false) {
+      let ship = createShip(shipArray[i].length, shipArray[i].horizontal);
+      ship.dataset.index = i;
+      if (selectedShipIndex == i) {
+        ship.classList.add("selected");
+      }
+      shipWindow.appendChild(ship);
     }
-    shipWindow.appendChild(ship);
   }
   document.querySelector("body").appendChild(shipWindow);
 }
@@ -34,7 +36,7 @@ function createShip(length, horizontal) {
 function addRotateBtn() {
   let rotateBtn = document.createElement("button");
   rotateBtn.classList.add("rotate-ships-btn");
-  rotateBtn.textContent = "Rotate Ships";
+  rotateBtn.textContent = "Rotate Ship";
   return rotateBtn;
 }
 
