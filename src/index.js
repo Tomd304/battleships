@@ -1,11 +1,21 @@
 import "./styles.css";
 import { createPlayer } from "./player";
-import { appendBoard } from "./createBoardDOM";
+import { appendBoard, createSetterBoard } from "./createBoardDOM";
 import { placeShip } from "./placeShipDOM";
 import { createAll } from "./createShipWindowDOM";
 
 let name = "Player 1";
 
+player1 = createPlayer(name);
+player1.setEnemyBoard(player2);
+player2 = createPlayer("computer");
+player2.setEnemyBoard(player1);
+console.table(player2.board);
+
+player1.enemyBoard.receiveAttack(2, 2);
+console.table(player2.board);
+
+/*
 document.querySelector("#start-game-btn").addEventListener("click", () => {
   let nameInput = document.querySelector("#player-name-input").value;
   if (nameInput) {
@@ -19,12 +29,15 @@ document.querySelector("#start-game-btn").addEventListener("click", () => {
 
 function startShipPlacement() {
   createAll();
-  appendBoard(0, name);
+  createSetterBoard();
   initPlacementListeners();
   selectableSquares();
+  setShip();
   let totalShips = 10;
   let placed = 0;
 }
+
+function setShip() {}
 
 function selectableSquares() {
   let squares = document.querySelectorAll(".square");
@@ -134,3 +147,4 @@ function rotateBtnListen() {
     });
   });
 }
+*/

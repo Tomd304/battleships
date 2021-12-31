@@ -5,6 +5,16 @@ function createNameHeader(name) {
   return header;
 }
 
+function createSetterBoard() {
+  let container = document.createElement("div");
+  container.classList.add("board-container");
+
+  let header = createNameHeader("Set Your Board");
+  let grid = createGrid(0);
+  container.append(header, grid);
+  document.querySelector("body").appendChild(container);
+}
+
 function appendBoard(p, name) {
   let container = document.createElement("div");
   container.classList.add("board-container");
@@ -50,4 +60,4 @@ function createSquare(x, y) {
 
 let gridSize = 8;
 
-export { appendBoard };
+export { appendBoard, createSetterBoard };

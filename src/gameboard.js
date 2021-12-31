@@ -19,6 +19,15 @@ const createGameboard = () => {
     return grid;
   }
 
+  function gameOver() {
+    ships.forEach((ship) => {
+      if (ship.sunk == false) {
+        return false;
+      }
+      return true;
+    });
+  }
+
   function initGrid() {
     for (let i = 0; i < gridSize; i++) {
       for (let j = 0; j < gridSize; j++) {
@@ -36,10 +45,7 @@ const createGameboard = () => {
   function setShipLocation(shipNumber, x, y, horizontal = true) {
     for (let i = 0; i < ships[shipNumber].length; i++) {
       grid[x][y].shipHere = true;
-      grid[x][y].shipXOrigin = x;
-      grid[x][y].shipYOrigin = y;
       grid[x][y].shipIndex = shipNumber;
-      grid[x][y].shipBlock = i;
       if (horizontal) {
         x += 1;
       } else {
@@ -63,7 +69,7 @@ const createGameboard = () => {
     return true;
   }
 
-  return { grid, ships, setShipLocation, receiveAttack };
+  return { grid, ships, setShipLocation, receiveAttack, gameOver };
 };
 
 export { createGameboard };

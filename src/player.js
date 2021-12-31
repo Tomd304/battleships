@@ -3,9 +3,13 @@ const { createGameboard } = require("./gameboard");
 const createPlayer = (name) => {
   let playerName = name;
   let board = createGameboard();
-  let shipCount = board.ships.length;
-  let shipsSunk = 0;
   let winner = false;
+  let enemyBoard;
+
+  function setEnemyBoard(enemy) {
+    enemyBoard = enemy.board;
+  }
+  return { playerName, board, winner, enemyBoard, setEnemyBoard };
 };
 
 export { createPlayer };
