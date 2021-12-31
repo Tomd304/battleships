@@ -24,8 +24,8 @@ const createGameboard = () => {
       if (ship.sunk == false) {
         return false;
       }
-      return true;
     });
+    return true;
   }
 
   function initGrid() {
@@ -55,17 +55,23 @@ const createGameboard = () => {
   }
 
   function receiveAttack(x, y) {
-    if (grid[x][y].attacked) {
-      return false;
-    } else {
-      grid[x][y].attacked = true;
-      if (grid[x][y].shipHere) {
-        ships[grid[x][y].shipIndex].markHit(grid[x][y].shipBlock);
-        if (ships[grid[x][y].shipIndex].allHit()) {
-          ships[grid[x][y].shipIndex].sinkSelf();
-        }
+    grid[x][y].attacked = true;
+    if (grid[x][y].shipHere) {
+      ships[grid[x][y].shipIndex].markHit(x, y);
+      if (ships[grid[x][y].shipIndex].allHit()) {
+        ships[grid[x][y].shipIndex].sinkSelf();
       }
     }
+
+    return true;
+  }
+
+  function gameOver() {
+    this.enemyBoard.ships.forEach((ship) => {
+      if (ship.sunk == false) {
+        return false;
+      }
+    });
     return true;
   }
 

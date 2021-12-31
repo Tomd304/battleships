@@ -1,45 +1,31 @@
 const createShip = (len) => {
   let length = len;
-  let blockHit = createHitArray(length);
   let sunk = false;
-  let horizontal;
+  let horizontal = false;
   let location = [];
 
-  function createHitArray() {
-    let blockHit = [];
-    for (let i = 0; i < length; i++) {
-      blockHit.push(false);
-    }
-    return blockHit;
-  }
-
   function markHit(x, y) {
-    location[
-    this.blockHit[index] = true;
+    location.forEach((block) => {
+      if (block.x == x && block.y == y) {
+        block.blockHit = true;
+      }
+    });
   }
   function allHit() {
-    for (let i = 0; i < length; i++) {
-      if ((blockHit[i] = false)) {
+    location.forEach((block) => {
+      if (block.blockHit == false) {
         return false;
       }
-    }
-    return true;
-  }
-
-  function setHorizontal() {
-    horizontal = true;
-  }
-
-  function setVertical() {
-    horizontal = false;
+      return true;
+    });
   }
 
   function placeShip(x, y, horizontal) {
     for (let i = 0; i < length; i++) {
       if (horizontal) {
-        location.push({ x: x + i, y });
+        location.push({ x: x + i, y, blockHit: false });
       } else {
-        location.push({ x, y: y + i });
+        location.push({ x, y: y + i, blockHit: false });
       }
     }
   }
@@ -50,15 +36,13 @@ const createShip = (len) => {
 
   return {
     length,
-    blockHit,
     sunk,
     markHit,
     allHit,
-    setHorizontal,
-    setVertical,
     placeShip,
     location,
     sinkSelf,
+    horizontal,
   };
 };
 

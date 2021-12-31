@@ -124,23 +124,3 @@ button {
     background-color: black;
     border-collapse: collapse;
 }
-
-.ship-2-horizontal {
-    height: 60px;
-    width: 120px;
-}
-
-.ship-3-horizontal {
-    height: 60px;
-    width: 180px;
-}
-
-.ship-4-horizontal {
-    height: 60px;
-    width: 240px;
-}
-
-.ship-5-horizontal {
-    height: 60px;
-    width: 300px;
-}

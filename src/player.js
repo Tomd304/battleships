@@ -4,12 +4,34 @@ const createPlayer = (name) => {
   let playerName = name;
   let board = createGameboard();
   let winner = false;
-  let enemyBoard;
+  let enemyBoard = "init";
 
-  function setEnemyBoard(enemy) {
-    enemyBoard = enemy.board;
+  function setEnemyBoard(board) {
+    this.enemyBoard = board;
   }
-  return { playerName, board, winner, enemyBoard, setEnemyBoard };
+
+  function attackEnemy(x, y) {
+    if (validInput(this.enemyBoard)) {
+      this.enemyBoard.receiveAttack(x, y);
+    }
+
+    function validInput(enemyBoard) {
+      if (enemyBoard.grid[x][y].attacked == true) {
+        console.log("not valid");
+        return false;
+      }
+      console.log("valid");
+      return true;
+    }
+  }
+  return {
+    playerName,
+    board,
+    winner,
+    enemyBoard,
+    setEnemyBoard,
+    attackEnemy,
+  };
 };
 
 export { createPlayer };

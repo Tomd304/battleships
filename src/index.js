@@ -1,21 +1,44 @@
 import "./styles.css";
 import { createPlayer } from "./player";
 import { appendBoard, createSetterBoard } from "./createBoardDOM";
-import { placeShip } from "./placeShipDOM";
-import { createAll } from "./createShipWindowDOM";
+import { makeShipWindow, makeSettingBoard } from "./placeShipDOM";
+import { createGameboard } from "./gameboard";
 
 let name = "Player 1";
 
-player1 = createPlayer(name);
-player1.setEnemyBoard(player2);
-player2 = createPlayer("computer");
-player2.setEnemyBoard(player1);
-console.table(player2.board);
+let player1 = createPlayer(name);
+let player2 = createPlayer("computer");
+player1.setEnemyBoard(player2.board);
+player2.setEnemyBoard(player1.board);
 
-player1.enemyBoard.receiveAttack(2, 2);
-console.table(player2.board);
+function playGame() {
+  let gameover = false;
+  while (true) {
+    playerTurn(player1);
+    if (player1.winner == true) {
+      gameover = true;
+    }
+    if (gameover == false) {
+      playerTurn(player2);
+      if (player2.winner == true) {
+        gameover = true;
+      }
+    }
+  }
+}
 
-/*
+function playerTurn(player) {
+  let attackSuccess = false;
+  while ((attackSuccess = false)) {
+    if (player.attackEnemy(x, y)) {
+      attackSuccess = true;
+    }
+    if (player.enemyBoard.gameOver()) {
+      player.winner = true;
+    }
+  }
+}
+
 document.querySelector("#start-game-btn").addEventListener("click", () => {
   let nameInput = document.querySelector("#player-name-input").value;
   if (nameInput) {
@@ -28,15 +51,71 @@ document.querySelector("#start-game-btn").addEventListener("click", () => {
 });
 
 function startShipPlacement() {
-  createAll();
-  createSetterBoard();
-  initPlacementListeners();
-  selectableSquares();
-  setShip();
-  let totalShips = 10;
-  let placed = 0;
-}
+  let tempBoard = createGameboard();
+  let selectedShipIndex = 0;
+  tempBoard.setShipLocation(5, 3, 3);
+  makeWindow();
 
+  function makeWindow() {
+    document.querySelector("body").innerHTML = "";
+    makeShipWindow(tempBoard.ships, selectedShipIndex);
+    makeSettingBoard(tempBoard.grid);
+    rotateBtnListen();
+    selectShipListen();
+    placeShipListen();
+  }
+
+  function selectShipListen() {
+    let ships = document.querySelectorAll(".ship");
+    ships.forEach((ship) =>
+      ship.addEventListener("click", () => {
+        selectedShipIndex = parseInt(ship.dataset.index);
+        makeWindow();
+      })
+    );
+  }
+
+  function placeShipListen() {
+    let squares = document.querySelectorAll(".square");
+    squares.forEach((square) => {
+      square.addEventListener("click", () => {
+        let x = parseInt(square.dataset.x);
+        let y = parseInt(square.dataset.y);
+        console.log("x: " + x, "y: " + y);
+        tempBoard.setShipLocation(
+          selectedShipIndex,
+          x,
+          y,
+          tempBoard.ships[selectedShipIndex].horizontal
+        );
+        tempBoard.ships.splice(selectedShipIndex, 1);
+        makeWindow();
+      });
+    });
+  }
+
+  function rotateBtnListen() {
+    document
+      .querySelector(".rotate-ships-btn")
+      .addEventListener("click", () => {
+        console.log(
+          selectedShipIndex,
+          tempBoard.ships[selectedShipIndex].horizontal
+        );
+        if (tempBoard.ships[selectedShipIndex].horizontal) {
+          tempBoard.ships[selectedShipIndex].horizontal = false;
+        } else {
+          tempBoard.ships[selectedShipIndex].horizontal = true;
+        }
+        console.log(
+          selectedShipIndex,
+          tempBoard.ships[selectedShipIndex].horizontal
+        );
+        makeWindow();
+      });
+  }
+}
+/*
 function setShip() {}
 
 function selectableSquares() {

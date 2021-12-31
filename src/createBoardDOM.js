@@ -8,7 +8,6 @@ function createNameHeader(name) {
 function createSetterBoard() {
   let container = document.createElement("div");
   container.classList.add("board-container");
-
   let header = createNameHeader("Set Your Board");
   let grid = createGrid(0);
   container.append(header, grid);
@@ -52,7 +51,8 @@ function createRow(y) {
 
 function createSquare(x, y) {
   let square = document.createElement("div");
-  square.classList.add("square");
+  square.classList.add("squares");
+  console.log(x, y);
   square.dataset.x = x;
   square.dataset.y = y;
   return square;
