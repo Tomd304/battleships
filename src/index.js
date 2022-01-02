@@ -1,7 +1,6 @@
 import "./styles.css";
 import { createPlayer } from "./objects/player";
 import { placementPhase } from "./phases/placementPhase";
-import { makeBattleWindow } from "./DOM/battlePhaseDOM";
 import { battlePhase } from "./phases/battlePhase";
 
 let player1 = {};

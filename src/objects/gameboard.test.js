@@ -1,4 +1,4 @@
-import { createGameboard, setShipLocation, receiveAttack } from "./gameboard";
+import { createGameboard } from "./gameboard";
 
 it("create default 8x8 grid", () => {
   let board = createGameboard();

@@ -56,6 +56,19 @@ function createRow(y, gridArr, enemy, player) {
 }
 
 function createSquare(x, y, gridArr, enemy, player) {
+  let colors = [
+    "beige",
+    "blue",
+    "green",
+    "turquoise",
+    "brown",
+    "pink",
+    "silver",
+    "gold",
+    "orange",
+    "teal",
+  ];
+
   let square = document.createElement("div");
   square.classList.add("square");
   if (enemy) {
@@ -72,6 +85,14 @@ function createSquare(x, y, gridArr, enemy, player) {
   if (gridArr[x][y].attacked) {
     let hitMarker = createHitMarker(x, y, gridArr[x][y].shipHere, player);
     square.appendChild(hitMarker);
+  }
+  if (
+    gridArr[x][y].shipHere &&
+    player.board.ships[player.board.grid[x][y].shipIndex].sunk
+  ) {
+    console.log("sunk");
+    square.classList.add("sunk");
+    square.style.backgroundColor = colors[player.board.grid[x][y].shipIndex];
   }
 
   square.dataset.x = x;
