@@ -94,7 +94,6 @@ function createSquare(x, y, gridArr, enemy, player) {
     gridArr[x][y].shipHere &&
     player.board.ships[player.board.grid[x][y].shipIndex].sunk
   ) {
-    console.log("sunk");
     square.classList.add("sunk");
     square.style.backgroundColor = colors[player.board.grid[x][y].shipIndex];
   }

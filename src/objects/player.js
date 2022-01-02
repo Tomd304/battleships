@@ -17,10 +17,8 @@ const createPlayer = (name) => {
 
     function validInput(enemyBoard) {
       if (enemyBoard.grid[x][y].attacked == true) {
-        console.log("not valid");
         return false;
       }
-      console.log("valid");
       return true;
     }
   }
