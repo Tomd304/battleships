@@ -1,20 +1,23 @@
 import "./styles.css";
-import { createPlayer } from "./player";
-import { appendBoard, createSetterBoard } from "./createBoardDOM";
-import { makeShipWindow, makeSettingBoard } from "./placeShipDOM";
-import { createGameboard } from "./gameboard";
-import { startShipPlacement } from "./shipPlacementPhase";
-import { makeBattleWindow } from "./battlePhaseDOM";
+import { createPlayer } from "./objects/player";
+import { placementPhase } from "./phases/placementPhase";
+import { makeBattleWindow } from "./DOM/battlePhaseDOM";
 
 let player1 = {};
 let player2 = createPlayer("Computer");
-startGameBtnListen().then((player) => {
-  player1 = player;
+startGame();
+
+async function startGame() {
+  player1 = await getPlayer1();
+  await placementPhase();
+  setComputerBoard();
   player1.setEnemyBoard(player2.board);
   player2.setEnemyBoard(player1.board);
-});
+  console.table(player2.board.grid);
+  makeBattleWindow(player1, player2);
+}
 
-function startGameBtnListen() {
+function getPlayer1() {
   return new Promise((resolve, reject) => {
     document.querySelector("#start-game-btn").addEventListener("click", () => {
       let nameInput = document.querySelector("#player-name-input").value;
@@ -24,7 +27,6 @@ function startGameBtnListen() {
         resolve(createPlayer("Player 1"));
       }
       document.querySelector("body").innerHTML = "";
-      startShipPlacement();
       //appendBoard(1, "Enemy");
     });
   });
@@ -34,7 +36,52 @@ function setPlayerBoard(tempBoard) {
   player1.board = tempBoard;
 }
 
-function setComputerBoard(tempBoard) {}
+function setComputerBoard() {
+  for (let i = 0; i < player2.board.ships.length; i++) {
+    placeShipRandom(i);
+  }
+
+  function placeShipRandom(shipIndex) {
+    let set = false;
+    let x, y;
+    let horizontal;
+    while (set == false) {
+      player2.board.ships[shipIndex].horizontal = Math.random() < 0.5;
+
+      x = Math.floor(Math.random() * 8);
+      y = Math.floor(Math.random() * 8);
+      if (
+        checkObstruction(
+          x,
+          y,
+          player2.board.ships[shipIndex],
+          player2.board.grid
+        )
+      ) {
+        player2.board.setShipLocation(player2.board.ships[shipIndex], x, y);
+        player2.board.ships[shipIndex].placeShip(x, y);
+        player2.board.ships[shipIndex].placed = true;
+        set = true;
+      }
+    }
+  }
+
+  function checkObstruction(x, y, ship, grid) {
+    let length = ship.length;
+    for (let i = 0; i < ship.length; i++) {
+      if (ship.horizontal) {
+        if (x + i > 7 || grid[x + i][y].shipHere) {
+          return false;
+        }
+      } else {
+        if (y + i > 7 || grid[x][y + i].shipHere) {
+          return false;
+        }
+      }
+    }
+    return true;
+  }
+}
 
 function playGame() {
   let gameover = false;

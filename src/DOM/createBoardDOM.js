@@ -51,7 +51,7 @@ function createRow(y) {
 
 function createSquare(x, y) {
   let square = document.createElement("div");
-  square.classList.add("squares");
+  square.classList.add("square");
   console.log(x, y);
   square.dataset.x = x;
   square.dataset.y = y;
