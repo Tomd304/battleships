@@ -4,19 +4,38 @@ import { appendBoard, createSetterBoard } from "./createBoardDOM";
 import { makeShipWindow, makeSettingBoard } from "./placeShipDOM";
 import { createGameboard } from "./gameboard";
 import { startShipPlacement } from "./shipPlacementPhase";
+import { makeBattleWindow } from "./battlePhaseDOM";
 
-let name = "Player 1";
+let player1 = {};
+let player2 = createPlayer("Computer");
+startGameBtnListen().then((player) => {
+  player1 = player;
+  player1.setEnemyBoard(player2.board);
+  player2.setEnemyBoard(player1.board);
+});
 
-let player1 = createPlayer(name);
-let player2 = createPlayer("computer");
-player1.setEnemyBoard(player2.board);
-player2.setEnemyBoard(player1.board);
+function startGameBtnListen() {
+  return new Promise((resolve, reject) => {
+    document.querySelector("#start-game-btn").addEventListener("click", () => {
+      let nameInput = document.querySelector("#player-name-input").value;
+      if (nameInput) {
+        resolve(createPlayer(nameInput));
+      } else {
+        resolve(createPlayer("Player 1"));
+      }
+      document.querySelector("body").innerHTML = "";
+      startShipPlacement();
+      //appendBoard(1, "Enemy");
+    });
+  });
+}
 
 function setPlayerBoard(tempBoard) {
   player1.board = tempBoard;
-  console.table(player1.board.grid);
-  console.table(player1.board.ships);
 }
+
+function setComputerBoard(tempBoard) {}
+
 function playGame() {
   let gameover = false;
   while (true) {
@@ -45,17 +64,11 @@ function playerTurn(player) {
   }
 }
 
-document.querySelector("#start-game-btn").addEventListener("click", () => {
-  let nameInput = document.querySelector("#player-name-input").value;
-  if (nameInput) {
-    name = nameInput;
-  }
-  document.querySelector("body").innerHTML = "";
-  startShipPlacement();
-  //appendBoard(1, "Enemy");
-});
+function startBattlePhase() {
+  makeBattleWindow(player1, player2);
+}
 
-export { setPlayerBoard };
+export { setPlayerBoard, startBattlePhase };
 
 /*
 function setShip() {}
