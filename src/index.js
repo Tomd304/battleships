@@ -2,33 +2,54 @@ import "./styles.css";
 import { createPlayer } from "./objects/player";
 import { placementPhase } from "./phases/placementPhase";
 import { battlePhase } from "./phases/battlePhase";
+import { winnerPhase } from "./phases/winnerPhase";
 
 let player1 = {};
-let player2 = createPlayer("Computer");
+let player2 = {};
 startGame();
 
+//game loop
 async function startGame() {
-  player1 = await getPlayer1();
-  await placementPhase();
-  setComputerBoard();
-  player1.setEnemyBoard(player2.board);
-  player2.setEnemyBoard(player1.board);
-  let winner = await battlePhase(player1, player2);
-  console.log(winner.playerName + "WINS!!!!");
+  let nameStorage = "";
+  while (true) {
+    console.log(nameStorage);
+    if (nameStorage) {
+      console.log(nameStorage + " is true");
+    } else {
+      console.log(nameStorage + " is false");
+    }
+
+    player1 = await getPlayer1(nameStorage);
+    player2 = createPlayer("Computer");
+    await placementPhase();
+    setComputerBoard();
+    player1.setEnemyBoard(player2.board);
+    player2.setEnemyBoard(player1.board);
+    let winner = await battlePhase(player1, player2);
+    console.log(winner.playerName + "WINS!!!!");
+    nameStorage = player1.playerName;
+    await winnerPhase(player1, player2);
+  }
 }
 
-function getPlayer1() {
+function getPlayer1(nameStorage) {
   return new Promise((resolve, reject) => {
-    document.querySelector("#start-game-btn").addEventListener("click", () => {
-      let nameInput = document.querySelector("#player-name-input").value;
-      if (nameInput) {
-        resolve(createPlayer(nameInput));
-      } else {
-        resolve(createPlayer("Player 1"));
-      }
-      document.querySelector("body").innerHTML = "";
-      //appendBoard(1, "Enemy");
-    });
+    if (nameStorage) {
+      resolve(createPlayer(nameStorage));
+    } else {
+      document
+        .querySelector("#start-game-btn")
+        .addEventListener("click", () => {
+          let nameInput = document.querySelector("#player-name-input").value;
+          if (nameInput) {
+            resolve(createPlayer(nameInput));
+          } else {
+            resolve(createPlayer("Player 1"));
+          }
+          document.querySelector("body").innerHTML = "";
+          //appendBoard(1, "Enemy");
+        });
+    }
   });
 }
 
