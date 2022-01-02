@@ -2,6 +2,7 @@ import "./styles.css";
 import { createPlayer } from "./objects/player";
 import { placementPhase } from "./phases/placementPhase";
 import { makeBattleWindow } from "./DOM/battlePhaseDOM";
+import { battlePhase } from "./phases/battlePhase";
 
 let player1 = {};
 let player2 = createPlayer("Computer");
@@ -13,8 +14,8 @@ async function startGame() {
   setComputerBoard();
   player1.setEnemyBoard(player2.board);
   player2.setEnemyBoard(player1.board);
-  console.table(player2.board.grid);
-  makeBattleWindow(player1, player2);
+  let winner = await battlePhase(player1, player2);
+  console.log(winner.playerName + "WINS!!!!");
 }
 
 function getPlayer1() {
@@ -44,7 +45,6 @@ function setComputerBoard() {
   function placeShipRandom(shipIndex) {
     let set = false;
     let x, y;
-    let horizontal;
     while (set == false) {
       player2.board.ships[shipIndex].horizontal = Math.random() < 0.5;
 
@@ -83,39 +83,7 @@ function setComputerBoard() {
   }
 }
 
-function playGame() {
-  let gameover = false;
-  while (true) {
-    playerTurn(player1);
-    if (player1.winner == true) {
-      gameover = true;
-    }
-    if (gameover == false) {
-      playerTurn(player2);
-      if (player2.winner == true) {
-        gameover = true;
-      }
-    }
-  }
-}
-
-function playerTurn(player) {
-  let attackSuccess = false;
-  while ((attackSuccess = false)) {
-    if (player.attackEnemy(x, y)) {
-      attackSuccess = true;
-    }
-    if (player.enemyBoard.gameOver()) {
-      player.winner = true;
-    }
-  }
-}
-
-function startBattlePhase() {
-  makeBattleWindow(player1, player2);
-}
-
-export { setPlayerBoard, startBattlePhase };
+export { setPlayerBoard };
 
 /*
 function setShip() {}

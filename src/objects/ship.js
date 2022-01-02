@@ -14,17 +14,18 @@ const createShip = (len, shipIndex) => {
     });
   }
   function allHit() {
+    let allhit = true;
     location.forEach((block) => {
       if (block.blockHit == false) {
-        return false;
+        allhit = false;
       }
-      return true;
     });
+    return allhit;
   }
 
   function placeShip(x, y) {
     for (let i = 0; i < length; i++) {
-      if (horizontal) {
+      if (this.horizontal) {
         location.push({ x: x + i, y, blockHit: false });
       } else {
         location.push({ x, y: y + i, blockHit: false });

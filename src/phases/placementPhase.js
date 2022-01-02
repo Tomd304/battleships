@@ -53,7 +53,6 @@ function placementPhase() {
                 return;
               }
             } //load battle phase
-            console.log("FINISHED!!!!");
             setPlayerBoard(tempBoard);
             resolve();
           }

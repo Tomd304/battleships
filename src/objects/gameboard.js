@@ -64,20 +64,19 @@ const createGameboard = () => {
         ships[grid[x][y].shipIndex].sinkSelf();
       }
     }
-
-    return true;
   }
 
-  function gameOver() {
-    this.enemyBoard.ships.forEach((ship) => {
+  function gameLost() {
+    let lost = true;
+    ships.forEach((ship) => {
       if (ship.sunk == false) {
-        return false;
+        lost = false;
       }
     });
-    return true;
+    return lost;
   }
 
-  return { grid, ships, setShipLocation, receiveAttack, gameOver };
+  return { grid, ships, setShipLocation, receiveAttack, gameLost };
 };
 
 export { createGameboard };
